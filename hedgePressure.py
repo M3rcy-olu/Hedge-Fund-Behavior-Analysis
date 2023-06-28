@@ -2,7 +2,7 @@ import pandas as pd
 import yfinance as yf
 from openpyxl import load_workbook
 
-with open('calcGreeks_final.py') as f: 
+with open('C:\Users\Mercy\Documents\GitHub\SmartMoneyAlgo\calcGreeks_final.py') as f: 
     exec(f.read())
 
 #Dictionary to easily access the columns/indecies for each component (ex: strike price)
