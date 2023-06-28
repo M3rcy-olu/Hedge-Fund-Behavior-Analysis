@@ -1,0 +1,3 @@
+negative reading of hedge pressure is interpreed as additional buying pressure 
+positive reading of hedge pressure is interpreted as additional selling pressure 
+

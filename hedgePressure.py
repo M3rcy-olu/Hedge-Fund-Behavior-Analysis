@@ -50,14 +50,14 @@ def calc_gamma_imb(ticker, call_dollar_gammas, put_dollar_gammas):
     max_counter = len(vol_history)
     counter = 0 
     while (counter < max_counter): 
-        vol_history[vol_history.columns[5]] = vol_history[vol_history.columns[5]].astype(int)
-        vol = vol_history.iloc[counter, 5]
         vol_history[vol_history.columns[4]] = vol_history[vol_history.columns[4]].astype(int)
-        price = vol_history.iloc[counter, 4]
-        total_dol_vol += vol * price
+        vol = vol_history.iloc[counter, 4]
+        vol_history[vol_history.columns[3]] = vol_history[vol_history.columns[3]].astype(int)
+        price = vol_history.iloc[counter, 3]
+        total_dol_vol += manage_const * vol * price
         counter += 1
 
-    avg_dol_vol = total_dol_vol / max_counter
+    avg_dol_vol = total_dol_vol / (max_counter)
 
 
     total_call_g = 0 
@@ -69,8 +69,17 @@ def calc_gamma_imb(ticker, call_dollar_gammas, put_dollar_gammas):
     for m in put_dollar_gammas: 
         total_put_g += m 
 
-    gamma_imb = (total_call_g + total_put_g) * (underlying_p/100) * (1/avg_dol_vol)
+    gamma_imb = (total_call_g + total_put_g) * (underlying_p/100) * (1/avg_dol_vol) * manage_const
     return gamma_imb
+
+def calc_hedge_pressure(gamma_imb): 
+    stock_closes = stock_data.iloc[:, 3].values.tolist()
+    stock_opens = stock_data.iloc[:, 0].values.tolist()
+    prev_close_p = stock_closes[-2]
+    current_p = stock_closes[-1]
+    current_return =  (current_p - prev_close_p) / prev_close_p
+    hedge_pressure = 100 * gamma_imb * current_return
+    return hedge_pressure, current_return
 
 #Overall gathers data from excel sheets
 #Initializes variables for stock name and experiation date. 
@@ -83,9 +92,11 @@ expiration_date = sheet_name[1]
 ticker_text = sheet_name[0]
 ticker = yf.Ticker(ticker_text)
 
-stock_price = ticker.history()
-stock_price = stock_price.iloc[:, 3].values.tolist()
+stock_data = ticker.history()
+stock_price = stock_data.iloc[:, 3].values.tolist()
 underlying_p = stock_price[-1]
+manage_const = 1e-5
+
 call_chain = pd.read_excel('calls_output.xlsx')
 call_chain = call_chain.drop(call_chain.columns[0], axis = 1)
 put_chain = pd.read_excel('puts_output.xlsx')
@@ -114,9 +125,13 @@ while (counter < num_options):
     counter+=1
 
 gamma_imb = calc_gamma_imb(ticker, call_dollar_gammas, put_dollar_gammas)
+hedge_pressure, c_return = calc_hedge_pressure(gamma_imb)
 
 print(expiration_date)
-print(gamma_imb)
+print("dollar gamma imbalance is per 1% move in the underlying stock price")
+print("Dollar Gamma Imbalance: " + str(gamma_imb))
+print("Hedge Pressure: " + str(hedge_pressure))
+print("Current Return: " + str(c_return * 100) + "%")
 
 
 

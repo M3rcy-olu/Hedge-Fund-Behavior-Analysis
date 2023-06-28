@@ -1,4 +1,5 @@
-#Imports
+#This program is to test getting stock options data from polygon as yfinance is not alway consistent
+# Imports
 from polygon import RESTClient
 import datetime
 
@@ -6,6 +7,7 @@ import datetime
 client = RESTClient(api_key="3d1jrVRqJl_BsnlUtbWPka_9Ve3QMISB")
 
 #Functions
+#Spaces an option tiker symbol: Remember a ticker symbol containes the underlying stock price, the experiation date, strike price and etc. data
 def spaceTicker(ticker):
     old_ticker = ticker
     ticker_length = len(ticker)
@@ -15,6 +17,7 @@ def spaceTicker(ticker):
     new_ticker = old_ticker[:experiation_space] + ',' + old_ticker[experiation_space:order_type_space] + ',' + old_ticker[order_type_space:strike_space] + ',' + old_ticker[strike_space:]
     return new_ticker
 
+#converts information in a ticker price into a dictionary
 def convertTicker(spaced_ticker):
     ticker_dict = {
         'root_symbol' : '',
@@ -36,16 +39,6 @@ def convertTicker(spaced_ticker):
 
 
 #Program/Testing
-ticker = "O:SPY251219C00650000"
-spaced_ticker = spaceTicker(ticker)
-ticker_dict = convertTicker(spaced_ticker)
-print(ticker_dict)
 
-'''ticker_info = {
-    'under_stock' : ticker
-}
-bars = client.get_aggs(ticker=ticker, multiplier=1, timespan="day", from_="2023-01-09", to="2023-01-10")
-for bar in bars:
-    print(bar)'''
 
 
