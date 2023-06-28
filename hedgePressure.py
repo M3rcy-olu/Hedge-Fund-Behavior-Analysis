@@ -102,12 +102,11 @@ call_chain = call_chain.drop(call_chain.columns[0], axis = 1)
 put_chain = pd.read_excel('puts_output.xlsx')
 put_chain = put_chain.drop(put_chain.columns[0], axis = 1)
 
+#Execution function to calculate dollar gammas 
+#Dollar gamma = gamma * open interest * 100 * latest underlying price --> for an option on the experiation date from the excel sheet for each strike price
 call_dollar_gammas = []
 put_dollar_gammas = []
 
-
-#Execution function to calculate dollar gammas 
-#Dollar gamma = gamma * open interest * 100 * latest underlying price --> for an option on the experiation date from the excel sheet for each strike price
 num_options = len(call_chain)
 counter = 0
 while (counter < num_options):
