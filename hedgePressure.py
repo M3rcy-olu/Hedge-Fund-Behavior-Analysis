@@ -43,6 +43,35 @@ def calc_dol_gamma(option, option_type):
         dollar_gamma = gamma * open_interest * 100 * underlying_p
     return dollar_gamma
 
+def calc_gamma_imb(ticker, call_dollar_gammas, put_dollar_gammas): 
+    vol_history = ticker.history(period= '1mo')
+
+    total_dol_vol = 0
+    max_counter = len(vol_history)
+    counter = 0 
+    while (counter < max_counter): 
+        vol_history[vol_history.columns[5]] = vol_history[vol_history.columns[5]].astype(int)
+        vol = vol_history.iloc[counter, 5]
+        vol_history[vol_history.columns[4]] = vol_history[vol_history.columns[4]].astype(int)
+        price = vol_history.iloc[counter, 4]
+        total_dol_vol += vol * price
+        counter += 1
+
+    avg_dol_vol = total_dol_vol / max_counter
+
+
+    total_call_g = 0 
+    total_put_g = 0
+
+    for g in call_dollar_gammas:
+        total_call_g += g
+
+    for m in put_dollar_gammas: 
+        total_put_g += m 
+
+    gamma_imb = (total_call_g + total_put_g) * (underlying_p/100) * (1/avg_dol_vol)
+    return gamma_imb
+
 #Overall gathers data from excel sheets
 #Initializes variables for stock name and experiation date. 
 #Converts Excel to dataframe 
@@ -84,32 +113,9 @@ while (counter < num_options):
     put_dollar_gammas.append(put_dol_gamma)
     counter+=1
 
-vol_history = ticker.history(period= '1mo')
+gamma_imb = calc_gamma_imb(ticker, call_dollar_gammas, put_dollar_gammas)
 
-total_dol_vol = 0
-max_counter = len(vol_history)
-counter = 0 
-while (counter < max_counter): 
-    vol_history[vol_history.columns[5]] = vol_history[vol_history.columns[5]].astype(int)
-    vol = vol_history.iloc[counter, 5]
-    vol_history[vol_history.columns[4]] = vol_history[vol_history.columns[4]].astype(int)
-    price = vol_history.iloc[counter, 4]
-    total_dol_vol += vol * price
-    counter += 1
-
-avg_dol_vol = total_dol_vol / max_counter
-
-
-total_call_g = 0 
-total_put_g = 0
-
-for g in call_dollar_gammas:
-    total_call_g += g
-
-for m in put_dollar_gammas: 
-    total_put_g += m 
-
-gamma_imb = (total_call_g + total_put_g) * (underlying_p/100) * (1/avg_dol_vol)
+print(expiration_date)
 print(gamma_imb)
 
 
