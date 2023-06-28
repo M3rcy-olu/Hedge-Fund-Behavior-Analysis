@@ -128,9 +128,9 @@ hedge_pressure, c_return = calc_hedge_pressure(gamma_imb)
 
 print(expiration_date)
 print("dollar gamma imbalance is per 1% move in the underlying stock price")
-print("Dollar Gamma Imbalance: " + str(gamma_imb))
-print("Hedge Pressure: " + str(hedge_pressure))
-print("Current Return: " + str(c_return * 100) + "%")
+print("Dollar Gamma Imbalance: " + str(round(gamma_imb, 5)))
+print("Hedge Pressure: " + str(round(hedge_pressure, 5)))
+print("Current Return: " + str(round(c_return * 100, 5)) + "%")
 
 
 
