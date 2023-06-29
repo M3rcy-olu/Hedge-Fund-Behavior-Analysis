@@ -132,7 +132,18 @@ hedge_pressure, r_open_last30 = calc_hedge_pressure(gamma_imb)
 today = date.today()
 today_str = today.strftime("%m/%d/%y")
 
-final_data = [today_str, str(gamma_imb), str(hedge_pressure)]
+def convert_to_string(value): 
+    if value < 0: 
+        string_val = "-" + str(round(value, 5))
+        return string_val
+    else: 
+        string_val = str(round(value, 5))
+        return string_val
+    
+gamma_imb = convert_to_string(gamma_imb)
+hedge_pressure = convert_to_string(hedge_pressure)
+
+final_data = [today_str, gamma_imb, hedge_pressure, underlying_p]
 
 wb = load_workbook("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
 sheet = wb.active 
@@ -142,13 +153,15 @@ last_row_date = sheet["A" + str(last_row)]
 if last_row_date == final_data[0]: 
     sheet["B" + str(last_row)] = final_data[1]
     sheet["C" + str(last_row)] = final_data[2]
+    sheet["D" + str(last_row)] = final_data[3]
 else: 
     sheet["A" + str(last_row+1)] = final_data[0]
     sheet["B" + str(last_row+1)] = final_data[1]
     sheet["C" + str(last_row+1)] = final_data[2]
+    sheet["D" + str(last_row+1)] = final_data[3]
 wb.save("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
 
-
+print("part 2 done")
 #Extra print and write to excells that I needed when testing my code. 
 #These are not needed in the actual functionality of the code.
 '''print(expiration_date)

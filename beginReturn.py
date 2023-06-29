@@ -9,7 +9,7 @@ def get_sheetnames_xlsx(filepath):
     wb = load_workbook(filepath, read_only=True, keep_links=False)
     return wb.sheetnames
 
-sheet_name = get_sheetnames_xlsx('calls_output.xlsx')
+sheet_name = get_sheetnames_xlsx('C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/calls_output.xlsx')
 sheet_name = sheet_name[0].split()
 
 expiration_date = sheet_name[1]
@@ -31,10 +31,7 @@ sheet = wb.active
 last_row = len(sheet['A'])
 last_row_date = sheet["A" + str(last_row)]
 
-today = date.today()
-yesterday = today - timedelta(days = 1)
-
-if last_row_date == yesterday: 
-    sheet["E" + str(last_row)] = str(round(current_return, 5)) + "%"
+sheet["E" + str(last_row)] = str(round(current_return, 5)) + "%"
 
 wb.save("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
+print("done")
