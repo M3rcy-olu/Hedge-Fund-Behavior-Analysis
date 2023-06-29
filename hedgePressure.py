@@ -2,6 +2,7 @@ import pandas as pd
 import yfinance as yf
 from openpyxl import load_workbook
 import datetime as dt
+from datetime import date
 
 with open('C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/calcGreeks_final.py') as f: 
     exec(f.read())
@@ -127,32 +128,36 @@ while (counter < num_options):
 gamma_imb = calc_gamma_imb(ticker, call_dollar_gammas, put_dollar_gammas)
 hedge_pressure, r_open_last30 = calc_hedge_pressure(gamma_imb)
 
-final_data = [dt.today(), gamma_imb, hedge_pressure]
+#updating calculated values to data excel
+today = date.today()
+today_str = today.strftime("%m/%d/%y")
 
-wb = load_workbook("C:\Users\Mercy\Documents\GitHub\SmartMoneyAlgo\hpReturnData.xlsx")
+final_data = [today_str, str(gamma_imb), str(hedge_pressure)]
+
+wb = load_workbook("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
 sheet = wb.active 
-c1 = sheet.cell(row = 1, column = 1)
-c2 = sheet.cell(row = 1, column = 2)
-c3 = sheet.cell(row = 1, column = 3)
-c4 = sheet.cell(row = 1, column = 4)
-c5 = sheet.cell(row = 1, column = 5)
+last_row = len(sheet['A'])
+last_row_date = sheet["A" + str(last_row)]
 
-c1.value = "Trading Date" 
-c2.value = "Gamma Imbalance"
-c3.value = "Hedge Pressure"
-c4.value = "t-1 to 12:30 Return" 
-c5.value  = "t+1 30 min Return"
-wb.save("C:\Users\Mercy\Documents\GitHub\SmartMoneyAlgo\hpReturnData.xlsx")
+if last_row_date == final_data[0]: 
+    sheet["B" + str(last_row)] = final_data[1]
+    sheet["C" + str(last_row)] = final_data[2]
+else: 
+    sheet["A" + str(last_row+1)] = final_data[0]
+    sheet["B" + str(last_row+1)] = final_data[1]
+    sheet["C" + str(last_row+1)] = final_data[2]
+wb.save("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
 
-print(expiration_date)
+
+#Extra print and write to excells that I needed when testing my code. 
+#These are not needed in the actual functionality of the code.
+'''print(expiration_date)
 print("dollar gamma imbalance is per 1% move in the underlying stock price")
 print("Dollar Gamma Imbalance: " + str(round(gamma_imb, 5)))
 print("Hedge Pressure: " + str(round(hedge_pressure, 5)))
-print("Current Return: " + str(round(r_open_last30) * 100, 5) + "%")
+print("Current Return: " + str(round(r_open_last30 * 100, 5)) + "%")
 
-
-
-'''Combines calculated dollar gammas with Dataframe of options data
+Combines calculated dollar gammas with Dataframe of options data
 call_dollar_gammas = pd.DataFrame({'Dollar Gamma': call_dollar_gammas})
 call_chain = pd.concat([call_chain, call_dollar_gammas], axis=1)
 

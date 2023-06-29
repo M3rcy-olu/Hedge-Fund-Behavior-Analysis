@@ -76,7 +76,7 @@ stock_price = stock_price.iloc[:, 3].values.tolist()
 
 #gets all the expirations dates for the ticker and puts it in a single coloumn data fram
 expiration_dates = pd.DataFrame(ticker.options)
-expiration_date = expiration_dates.loc[1][0]
+expiration_date = expiration_dates.loc[0][0]
 
 
 #gets all call and put options for the selected expiration date
