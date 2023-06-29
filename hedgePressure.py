@@ -132,18 +132,7 @@ hedge_pressure, r_open_last30 = calc_hedge_pressure(gamma_imb)
 today = date.today()
 today_str = today.strftime("%m/%d/%y")
 
-def convert_to_string(value): 
-    if value < 0: 
-        string_val = "-" + str(round(value, 5))
-        return string_val
-    else: 
-        string_val = str(round(value, 5))
-        return string_val
-    
-gamma_imb = convert_to_string(gamma_imb)
-hedge_pressure = convert_to_string(hedge_pressure)
-
-final_data = [today_str, gamma_imb, hedge_pressure, underlying_p]
+final_data = [today_str, round(gamma_imb, 5), round(hedge_pressure, 5), underlying_p]
 
 wb = load_workbook("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
 sheet = wb.active 
