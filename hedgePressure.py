@@ -1,8 +1,9 @@
 import pandas as pd
 import yfinance as yf
 from openpyxl import load_workbook
+import datetime as dt
 
-with open('C:\Users\Mercy\Documents\GitHub\SmartMoneyAlgo\calcGreeks_final.py') as f: 
+with open('C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/calcGreeks_final.py') as f: 
     exec(f.read())
 
 #Dictionary to easily access the columns/indecies for each component (ex: strike price)
@@ -124,17 +125,34 @@ while (counter < num_options):
     counter+=1
 
 gamma_imb = calc_gamma_imb(ticker, call_dollar_gammas, put_dollar_gammas)
-hedge_pressure, c_return = calc_hedge_pressure(gamma_imb)
+hedge_pressure, r_open_last30 = calc_hedge_pressure(gamma_imb)
+
+final_data = [dt.today(), gamma_imb, hedge_pressure]
+
+wb = load_workbook("C:\Users\Mercy\Documents\GitHub\SmartMoneyAlgo\hpReturnData.xlsx")
+sheet = wb.active 
+c1 = sheet.cell(row = 1, column = 1)
+c2 = sheet.cell(row = 1, column = 2)
+c3 = sheet.cell(row = 1, column = 3)
+c4 = sheet.cell(row = 1, column = 4)
+c5 = sheet.cell(row = 1, column = 5)
+
+c1.value = "Trading Date" 
+c2.value = "Gamma Imbalance"
+c3.value = "Hedge Pressure"
+c4.value = "t-1 to 12:30 Return" 
+c5.value  = "t+1 30 min Return"
+wb.save("C:\Users\Mercy\Documents\GitHub\SmartMoneyAlgo\hpReturnData.xlsx")
 
 print(expiration_date)
 print("dollar gamma imbalance is per 1% move in the underlying stock price")
 print("Dollar Gamma Imbalance: " + str(round(gamma_imb, 5)))
 print("Hedge Pressure: " + str(round(hedge_pressure, 5)))
-print("Current Return: " + str(round(c_return * 100, 5)) + "%")
+print("Current Return: " + str(round(r_open_last30) * 100, 5) + "%")
 
 
 
-#Combines calculated dollar gammas with Dataframe of options data
+'''Combines calculated dollar gammas with Dataframe of options data
 call_dollar_gammas = pd.DataFrame({'Dollar Gamma': call_dollar_gammas})
 call_chain = pd.concat([call_chain, call_dollar_gammas], axis=1)
 
@@ -142,5 +160,5 @@ put_dollar_gammas = pd.DataFrame({'Dollar Gamma': put_dollar_gammas})
 put_chain = pd.concat([put_chain, put_dollar_gammas], axis=1)
 
 call_chain.to_excel('calls_dol_gammas.xlsx', sheet_name= ticker_text + " " + expiration_date)
-put_chain.to_excel('puts_dol_gammas.xlsx', sheet_name= ticker_text + " " + expiration_date)
+put_chain.to_excel('puts_dol_gammas.xlsx', sheet_name= ticker_text + " " + expiration_date)'''
 
