@@ -132,7 +132,7 @@ hedge_pressure, r_open_last30 = calc_hedge_pressure(gamma_imb)
 today = date.today()
 today_str = today.strftime("%m/%d/%y")
 
-final_data = [today_str, round(gamma_imb, 5), round(hedge_pressure, 5), underlying_p]
+final_data = [today_str, round(gamma_imb, 5), round(hedge_pressure, 5), r_open_last30, underlying_p]
 
 wb = load_workbook("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
 sheet = wb.active 
@@ -143,11 +143,13 @@ if last_row_date == final_data[0]:
     sheet["B" + str(last_row)] = final_data[1]
     sheet["C" + str(last_row)] = final_data[2]
     sheet["D" + str(last_row)] = final_data[3]
+    sheet["E" + str(last_row)] = final_data[4]
 else: 
     sheet["A" + str(last_row+1)] = final_data[0]
     sheet["B" + str(last_row+1)] = final_data[1]
     sheet["C" + str(last_row+1)] = final_data[2]
     sheet["D" + str(last_row+1)] = final_data[3]
+    sheet["E" + str(last_row+1)] = final_data[4]
 wb.save("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
 
 print("part 2 done")

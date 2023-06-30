@@ -25,13 +25,13 @@ last_row = len(sheet['A'])
 last_row_date = sheet["A" + str(last_row)]
 
 stock_closes = stock_data.iloc[:, 3].values.tolist()
-stock_at_30 = sheet["D" + str(last_row)].value
+stock_at_30 = sheet["E" + str(last_row)].value
 current_p = stock_closes[-1]
 current_return =  ((current_p - stock_at_30) / stock_at_30) *100
 
 today = date.today()
 
-sheet["D" + str(last_row)] = str(round(current_return, 5)) + "%"
+sheet["E" + str(last_row)] = str(round(current_return, 5)) + "%"
 
 wb.save("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
 print("done")
