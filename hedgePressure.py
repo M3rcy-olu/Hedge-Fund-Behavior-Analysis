@@ -137,7 +137,7 @@ final_data = [today_str, round(gamma_imb, 5), round(hedge_pressure, 5), r_open_l
 wb = load_workbook("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
 sheet = wb.active 
 last_row = len(sheet['A'])
-last_row_date = sheet["A" + str(last_row)]
+last_row_date = sheet["A" + str(last_row)].value
 
 if last_row_date == final_data[0]: 
     sheet["B" + str(last_row)] = final_data[1]
