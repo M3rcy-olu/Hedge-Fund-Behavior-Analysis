@@ -39,12 +39,12 @@ def calc_imp_vol(option, maturity_time, type):
 
     for i in range(max_iterations): 
 
-        diff = bs(underlying_p, strike_p, time, risk_free_rate, sigma) - options_price
+        diff = bs(type, underlying_p, strike_p, time, risk_free_rate, sigma) - options_price
 
         if abs(diff) < tol: 
             break
         
-        sigma = sigma - diff / vega(underlying_p, strike_p, time, risk_free_rate, sigma)
+        sigma = (sigma - diff) / vega(type, underlying_p, strike_p, time, risk_free_rate, sigma)
 
     implied_volatility = sigma
     return implied_volatility
@@ -131,6 +131,7 @@ while (counter < num_options):
     iVol = calc_imp_vol(put_option, maturity_time, type = 'p')
     puts_iVol.append(iVol)
     counter +=1 
+
 print(calls_iVol, puts_iVol)
 call_iVol_table = pd.DataFrame({"Implied Volatility" : calls_iVol})
 put_iVol_table = pd.DataFrame({"Implied Volatility" : puts_iVol})
