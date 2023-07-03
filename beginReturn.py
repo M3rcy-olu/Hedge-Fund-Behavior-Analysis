@@ -31,7 +31,7 @@ sheet = wb.active
 last_row = len(sheet['A'])
 last_row_date = sheet["A" + str(last_row)]
 
-sheet["F" + str(last_row)] = str(round(current_return, 5)) + "%"
+sheet["F" + str(last_row)] = round(current_return, 5)
 
 wb.save("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
 print("done")

@@ -31,7 +31,7 @@ current_return =  ((current_p - stock_at_30) / stock_at_30) *100
 
 today = date.today()
 
-sheet["E" + str(last_row)] = str(round(current_return, 5)) + "%"
+sheet["E" + str(last_row)] = round(current_return, 5)
 
 wb.save("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
 print("done")

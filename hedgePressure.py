@@ -79,7 +79,7 @@ def calc_hedge_pressure(gamma_imb):
     stock_opens = stock_data.iloc[:, 0].values.tolist()
     prev_close_p = stock_closes[-2]
     current_p = stock_closes[-1]
-    current_return =  (current_p - prev_close_p) / prev_close_p
+    current_return =  ((current_p - prev_close_p) / prev_close_p)*100
     hedge_pressure = 100 * gamma_imb * current_return
     return hedge_pressure, current_return
 
