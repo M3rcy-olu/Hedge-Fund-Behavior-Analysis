@@ -1,7 +1,8 @@
 #This program is to test getting stock options data from polygon as yfinance is not alway consistent
 # Imports
-from polygon import RESTClient
-import datetime
+'''from polygon import RESTClient'''
+import yfinance as yf
+'''import datetime
 
 #Initiate Client
 client = RESTClient(api_key="3d1jrVRqJl_BsnlUtbWPka_9Ve3QMISB")
@@ -35,10 +36,23 @@ def convertTicker(spaced_ticker):
     ticker_dict['root_symbol'] = ticker_dict['root_symbol'].removeprefix('O:')
     temp_exp_date = '20' + ticker_dict['experiation_date'][:2] + '/' + ticker_dict['experiation_date'][2:4] + '/' + ticker_dict['experiation_date'][4:]
     format = '%Y/%m/%d'
-    return ticker_dict
+    return ticker_dict'''
 
 
 #Program/Testing
 
+ticker_text = 'SPY'
+ticker = yf.Ticker(ticker_text)
 
+stock_data = ticker.history()
+
+stock_closes = stock_data.iloc[:, 3].values.tolist()
+stock_opens = stock_data.iloc[:, 0].values.tolist()
+open_p = stock_opens[-1]
+current_p = stock_closes[-1]
+current_return =  ((current_p - open_p) / open_p) *100
+
+print(open_p)
+print(current_p)
+print(current_return)
 
