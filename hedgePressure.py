@@ -4,7 +4,7 @@ from openpyxl import load_workbook
 import datetime as dt
 from datetime import date
 
-with open('C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/calcGreeks_final.py') as f: 
+with open('C:/Users/Administrator/Desktop/Mercy/vscode/SmartMoneyAlgo/calcGreeks_final.py') as f: 
     exec(f.read())
 
 #Dictionary to easily access the columns/indecies for each component (ex: strike price)
@@ -134,7 +134,7 @@ today_str = today.strftime("%m/%d/%y")
 
 final_data = [today_str, round(gamma_imb, 5), round(hedge_pressure, 5), r_open_last30, underlying_p]
 
-wb = load_workbook("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
+wb = load_workbook("C:/Users/Administrator/Desktop/Mercy/vscode/SmartMoneyAlgo/hpReturnData.xlsx")
 sheet = wb.active 
 last_row = len(sheet['A'])
 last_row_date = sheet["A" + str(last_row)].value
@@ -150,7 +150,7 @@ else:
     sheet["C" + str(last_row+1)] = final_data[2]
     sheet["D" + str(last_row+1)] = final_data[3]
     sheet["E" + str(last_row+1)] = final_data[4]
-wb.save("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
+wb.save("C:/Users/Administrator/Desktop/Mercy/vscode/SmartMoneyAlgo/hpReturnData.xlsx")
 
 print("part 2 done")
 #Extra print and write to excells that I needed when testing my code. 

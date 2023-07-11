@@ -9,7 +9,7 @@ def get_sheetnames_xlsx(filepath):
     wb = load_workbook(filepath, read_only=True, keep_links=False)
     return wb.sheetnames
 
-sheet_name = get_sheetnames_xlsx('C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/calls_output.xlsx')
+sheet_name = get_sheetnames_xlsx('calls_output.xlsx')
 sheet_name = sheet_name[0].split()
 
 expiration_date = sheet_name[1]
@@ -26,12 +26,12 @@ current_p = stock_closes[-1]
 current_return =  ((current_p - open_p) / open_p) *100
 
 
-wb = load_workbook("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
+wb = load_workbook("C:/Users/Administrator/Desktop/Mercy/vscode/SmartMoneyAlgo/hpReturnData.xlsx")
 sheet = wb.active 
 last_row = len(sheet['A'])
 last_row_date = sheet["A" + str(last_row)]
 
 sheet["F" + str(last_row)] = round(current_return, 5)
 
-wb.save("C:/Users/Mercy/Documents/GitHub/SmartMoneyAlgo/hpReturnData.xlsx")
+wb.save("C:/Users/Administrator/Desktop/Mercy/vscode/SmartMoneyAlgo/hpReturnData.xlsx")
 print("done")
