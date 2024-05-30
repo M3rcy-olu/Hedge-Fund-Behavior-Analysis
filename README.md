@@ -1,2 +1,2 @@
 # SmartMoneyAlgo
- Determining Hedge Presure & affect of stock prices
+ Determining Hedge Presure & affect on stock prices
